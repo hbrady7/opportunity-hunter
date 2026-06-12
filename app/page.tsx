@@ -10,7 +10,26 @@ import { useHydrated, useApiStatus, agentPost, AgentError } from "@/lib/client";
 import { isValidCode, normalizeCode } from "@/lib/utils";
 import { SERVICE_LINES, SERVICE_LINE_LABELS, type ServiceLine } from "@/lib/constants";
 import type { Research } from "@/lib/types";
-import { Crosshair, Search, Save, BadgeCheck, Calculator, Check } from "lucide-react";
+import Link from "next/link";
+import { Crosshair, Search, Save, BadgeCheck, Calculator, Check, Table2, ArrowRight } from "lucide-react";
+
+function TomorrowPlan() {
+  return (
+    <Link
+      href="/workbench"
+      className="no-print card-plain border-dashed p-3 mb-5 flex items-center gap-3 hover:border-ink transition-colors"
+    >
+      <Table2 size={18} className="text-claim shrink-0" />
+      <div className="min-w-0">
+        <div className="label-mono label-mono-ink">Tomorrow&rsquo;s plan</div>
+        <p className="text-xs text-slate mt-0.5">
+          Download the starter workbook → build the analysis → paste your shortlist back here. Workbench has the whole path.
+        </p>
+      </div>
+      <ArrowRight size={15} className="text-slate ml-auto shrink-0" />
+    </Link>
+  );
+}
 
 function HuntInner() {
   const router = useRouter();
@@ -99,6 +118,8 @@ function HuntInner() {
         title="Hunt a code"
         subtitle="Enter a CPT/HCPCS code; the companion researches it against CMS sources and returns a claim-style card."
       />
+
+      <TomorrowPlan />
 
       {/* input form */}
       <div className="card-plain p-4 sm:p-5 space-y-4">

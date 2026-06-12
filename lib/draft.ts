@@ -132,15 +132,37 @@ function mentor(entries: CodeEntry[]): string {
   return `**Mentor touch-base update**\n\n${parts.join(" ")}`;
 }
 
-export function generateDraft(template: DraftTemplate, entries: CodeEntry[]): string {
+export interface AnalysisNote {
+  question: string;
+  notes: string;
+}
+
+/** Data-analysis findings captured in Workbench → Analysis Questions. */
+function analysisBlock(notes: AnalysisNote[]): string {
+  const filled = notes.filter((n) => n.notes.trim());
+  if (!filled.length) return "";
+  const lines = ["## Data Analysis Findings", "", "_From the Excel analysis workpaper (Workbench):_", ""];
+  for (const n of filled) {
+    lines.push(`- **${n.question}** ${n.notes.trim()}`);
+  }
+  return "\n\n" + lines.join("\n");
+}
+
+export function generateDraft(
+  template: DraftTemplate,
+  entries: CodeEntry[],
+  analysis: AnalysisNote[] = []
+): string {
   if (!entries.length) return "_Select at least one code from your Library to draft._";
   switch (template) {
     case "workpaper":
-      return workpaper(entries);
+      return workpaper(entries) + analysisBlock(analysis);
     case "slide":
       return slide(entries);
-    case "mentor":
-      return mentor(entries);
+    case "mentor": {
+      const block = analysisBlock(analysis);
+      return mentor(entries) + (block ? block : "");
+    }
   }
 }
 

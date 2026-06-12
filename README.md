@@ -10,6 +10,7 @@ This is **not** a data platform. There are no file uploads, no datasets, no data
 |---|--------|--------------|
 | 1 | **Hunt** (`/`) | Research one code → claim-style card with reimbursability, rate, docs, verdict. |
 | 2 | **Library** (`/library`) | Ranked ledger of saved codes; notes, timeline, CSV/markdown export. |
+| W | **Workbench** (`/workbench`) | Excel analysis companion: build guide, formula cards, pivot recipes, a downloadable starter `.xlsx`, and bulk-paste shortlist intake. |
 | 3 | **Verify** (`/verify`) | Criteria engine you fully control; hard gates + soft scoring → VERIFIED/CONDITIONAL/FAILED. |
 | 4 | **Estimate** (`/estimate`) | Transparent reimbursement math; low/base/high annual opportunity. |
 | 5 | **Scout** (`/scout`) | Net-new procedure discovery by service line. |
@@ -36,6 +37,19 @@ All of your data lives **only in this browser** (localStorage, via Zustand). The
 ## Deploy
 
 Push to GitHub and import into Vercel. Set `ANTHROPIC_API_KEY` (and optionally `ANTHROPIC_MODEL`) in the Vercel project's environment variables. The URL is intentionally public; agent routes are rate-limited (20 calls/hour/IP) and the site is `noindex`.
+
+## Workbench — the Excel analysis companion
+
+The app never touches your raw charge data. Instead, **Workbench** rides shotgun while you build the Excel data-analysis workpaper:
+
+- **Build Guide** — a 7-step, persisted checklist for staging the extract (`tblCharges`), adding hygiene columns, filtering to outpatient, and building the pivots.
+- **Formula Cards** — copy-ready, structured-reference Excel formulas (CPT Clean, Post Month, Avg Charge/Unit, Excluded?, Pareto cumulative %, …).
+- **Pivot Recipes** — six PivotTables with exact field placements, led by the **Whitespace Grid** (cross-system adoption gaps = opportunities).
+- **Starter Workbook** — one click generates a clean `.xlsx` (SheetJS, fully client-side) with six tabs: READ-ME, 1-Raw, a SUMIFS-wired 2-Summary, 3-Exclusions (pre-filled from your Settings list), 4-Shortlist (matches the Library CSV), and Methodology. The summary formulas recalculate once you paste data and name the table `tblCharges`.
+- **Bulk Paste intake** — paste up to 50 `CPT · qty · charges` rows straight from the Top Codes pivot (tolerant of headers, `$`, thousands commas, and either column order). Preview shows new / updates / EXCLUDED, then commits to the Library in a "to research" state and offers a rate-limited **research queue**. Also available as a button on the Library screen.
+- **Analysis Questions** — a 10-question checklist with notes that flow into the Draft module as workpaper context.
+
+The starter workbook uses SUMIFS rather than native PivotTables (SheetJS can't author pivot caches) — the six native-pivot recipes live in the app. Freeze the header row yourself with View → Freeze Top Row.
 
 ## The estimate disclaimer
 

@@ -5,6 +5,7 @@ import { PageHeader, EmptyState, Label } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { useHydrated } from "@/lib/client";
 import { generateDraft, TEMPLATE_META } from "@/lib/draft";
+import { ANALYSIS_QUESTIONS } from "@/lib/workbench-content";
 import { copyText, downloadFile, makeId } from "@/lib/utils";
 import type { DraftTemplate } from "@/lib/types";
 import { FileText, ClipboardCopy, Download, Check, Save, Trash2 } from "lucide-react";
@@ -16,18 +17,28 @@ export default function DraftPage() {
   const addDraft = useStore((s) => s.addDraft);
   const removeDraft = useStore((s) => s.removeDraft);
   const pushTimeline = useStore((s) => s.pushTimeline);
+  const analysisAnswers = useStore((s) => s.analysisAnswers);
 
   const [template, setTemplate] = useState<DraftTemplate>("workpaper");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState(false);
+  const [includeAnalysis, setIncludeAnalysis] = useState(true);
+
+  const analysisNotes = useMemo(
+    () =>
+      ANALYSIS_QUESTIONS.map((q) => ({ question: q.text, notes: analysisAnswers[q.id]?.notes ?? "" })).filter(
+        (n) => n.notes.trim()
+      ),
+    [analysisAnswers]
+  );
 
   const selectedEntries = useMemo(
     () => codes.filter((c) => selected.has(c.id)),
     [codes, selected]
   );
   const content = useMemo(
-    () => generateDraft(template, selectedEntries),
-    [template, selectedEntries]
+    () => generateDraft(template, selectedEntries, includeAnalysis ? analysisNotes : []),
+    [template, selectedEntries, includeAnalysis, analysisNotes]
   );
 
   function toggle(id: string) {
@@ -100,6 +111,16 @@ export default function DraftPage() {
               </button>
             ))}
           </div>
+
+          {/* analysis findings toggle */}
+          {analysisNotes.length > 0 && template !== "slide" && (
+            <label className="card-plain border-dashed p-3 mb-4 flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" checked={includeAnalysis} onChange={(e) => setIncludeAnalysis(e.target.checked)} />
+              <span className="text-sm">
+                Append <strong>{analysisNotes.length}</strong> data-analysis finding(s) from Workbench
+              </span>
+            </label>
+          )}
 
           {/* code multi-select */}
           <div className="card-plain p-3 mb-4">
