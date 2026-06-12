@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { PageHeader, EmptyState, Label, Chip } from "@/components/ui";
 import { CodeDetail } from "@/components/code-detail";
+import { BulkIntake } from "@/components/workbench/bulk-intake";
 import { useStore } from "@/lib/store";
 import { useHydrated } from "@/lib/client";
 import {
@@ -15,7 +16,7 @@ import {
 import { toCSV, toMarkdownTable } from "@/lib/export";
 import { formatUSD, formatNumber, isValidCode, normalizeCode, downloadFile, copyText } from "@/lib/utils";
 import type { CodeEntry } from "@/lib/types";
-import { Library as LibraryIcon, Plus, Download, ClipboardCopy, ArrowUpDown, Check } from "lucide-react";
+import { Library as LibraryIcon, Plus, Download, ClipboardCopy, ClipboardPaste, ArrowUpDown, Check, X } from "lucide-react";
 
 type SortKey = "code" | "serviceLine" | "verdict" | "reimbursable" | "rate" | "qty" | "charges" | "verify" | "opp";
 
@@ -39,6 +40,7 @@ function LibraryInner() {
   const isExcluded = useStore((s) => s.isExcluded);
 
   const [openId, setOpenId] = useState<string | null>(null);
+  const [showBulk, setShowBulk] = useState(false);
 
   useEffect(() => {
     const o = params.get("open");
@@ -136,16 +138,21 @@ function LibraryInner() {
         title="Code ledger"
         subtitle="Every saved code, ranked. Sort any column, filter, annotate, and export to your workpapers."
         right={
-          codes.length > 0 ? (
-            <div className="flex gap-2">
-              <button className="btn btn-sm btn-ghost" onClick={() => downloadFile("opportunity-hunter-library.csv", toCSV(filtered), "text/csv")}>
-                <Download size={13} /> CSV
-              </button>
-              <button className="btn btn-sm btn-ghost" onClick={copyMd}>
-                {copied ? <Check size={13} /> : <ClipboardCopy size={13} />} {copied ? "Copied" : "MD"}
-              </button>
-            </div>
-          ) : undefined
+          <div className="flex gap-2">
+            <button className="btn btn-sm" onClick={() => setShowBulk(true)}>
+              <ClipboardPaste size={13} /> Bulk paste
+            </button>
+            {codes.length > 0 && (
+              <>
+                <button className="btn btn-sm btn-ghost" onClick={() => downloadFile("opportunity-hunter-library.csv", toCSV(filtered), "text/csv")}>
+                  <Download size={13} /> CSV
+                </button>
+                <button className="btn btn-sm btn-ghost" onClick={copyMd}>
+                  {copied ? <Check size={13} /> : <ClipboardCopy size={13} />} {copied ? "Copied" : "MD"}
+                </button>
+              </>
+            )}
+          </div>
         }
       />
 
@@ -270,6 +277,23 @@ function LibraryInner() {
       )}
 
       {openId && <CodeDetail id={openId} onClose={() => setOpenId(null)} />}
+
+      {showBulk && (
+        <div className="fixed inset-0 z-50 no-print">
+          <div className="absolute inset-0 bg-ink/30" onClick={() => setShowBulk(false)} />
+          <div className="absolute inset-y-0 right-0 w-full sm:max-w-xl bg-paper border-l border-rule overflow-y-auto shadow-xl">
+            <div className="sticky top-0 bg-paper/95 backdrop-blur border-b border-rule px-4 py-3 flex items-center justify-between z-10">
+              <span className="label-mono label-mono-ink">Bulk paste intake</span>
+              <button className="btn btn-sm btn-ghost" onClick={() => setShowBulk(false)}>
+                <X size={14} />
+              </button>
+            </div>
+            <div className="p-4">
+              <BulkIntake onClose={() => setShowBulk(false)} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

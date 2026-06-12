@@ -65,6 +65,11 @@ export function makeId(prefix = "id"): string {
   return `${prefix}_${Date.now().toString(36)}_${Math.floor(Math.random() * 1e6).toString(36)}`;
 }
 
+/** Current epoch ms. Imported helper so component code stays free of the impure `Date.now` global. */
+export function nowMs(): number {
+  return Date.now();
+}
+
 export function downloadFile(filename: string, content: string, mime = "text/plain") {
   const blob = new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
