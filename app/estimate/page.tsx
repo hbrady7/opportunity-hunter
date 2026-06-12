@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { PageHeader, Label, Spinner, KeyMissing } from "@/components/ui";
+import { PageHeader, Label, Spinner } from "@/components/ui";
 import { AgentErrorView } from "@/components/agents/agent-error";
 import { useStore } from "@/lib/store";
 import { useApiStatus, agentPost, AgentError } from "@/lib/client";

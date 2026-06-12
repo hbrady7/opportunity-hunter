@@ -112,7 +112,7 @@ export default function LibraryPage() {
     );
   }
 
-  const Th = ({ k, children, className }: { k: SortKey; children: React.ReactNode; className?: string }) => (
+  const th = (k: SortKey, children: React.ReactNode, className?: string) => (
     <th className={className}>
       <button className="inline-flex items-center gap-1 hover:text-ink" onClick={() => setSort(k)}>
         {children}
@@ -191,16 +191,16 @@ export default function LibraryPage() {
             <table className="ledger min-w-[760px]">
               <thead>
                 <tr>
-                  <Th k="code">Code</Th>
-                  <Th k="serviceLine">Line</Th>
+                  {th("code", "Code")}
+                  {th("serviceLine", "Line")}
                   <th>Description</th>
-                  <Th k="verdict">Verdict</Th>
-                  <Th k="reimbursable">Sep. Reimb.</Th>
-                  <Th k="rate" className="text-right">Medicare</Th>
-                  <Th k="qty" className="text-right">Qty</Th>
-                  <Th k="charges" className="text-right">Charges</Th>
-                  <Th k="verify">Verify</Th>
-                  <Th k="opp" className="text-right">Est. Opp</Th>
+                  {th("verdict", "Verdict")}
+                  {th("reimbursable", "Sep. Reimb.")}
+                  {th("rate", "Medicare", "text-right")}
+                  {th("qty", "Qty", "text-right")}
+                  {th("charges", "Charges", "text-right")}
+                  {th("verify", "Verify")}
+                  {th("opp", "Est. Opp", "text-right")}
                 </tr>
               </thead>
               <tbody>

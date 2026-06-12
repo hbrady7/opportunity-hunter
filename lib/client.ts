@@ -7,7 +7,9 @@ import { useStore } from "./store";
 export function useHydrated(): boolean {
   const hydrated = useStore((s) => s.hydrated);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return mounted && hydrated;
 }
 

@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PageHeader, EmptyState, Label, Spinner } from "@/components/ui";
+import { PageHeader, EmptyState, Label, Spinner, KeyMissing } from "@/components/ui";
 import { ClaimCard } from "@/components/claim-card";
 import { AgentErrorView } from "@/components/agents/agent-error";
 import { useStore } from "@/lib/store";
@@ -10,7 +10,6 @@ import { useHydrated, useApiStatus, agentPost, AgentError } from "@/lib/client";
 import { isValidCode, normalizeCode } from "@/lib/utils";
 import { SERVICE_LINES, SERVICE_LINE_LABELS, type ServiceLine } from "@/lib/constants";
 import type { Research } from "@/lib/types";
-import { KeyMissing } from "@/components/ui";
 import { Crosshair, Search, Save, BadgeCheck, Calculator, Check } from "lucide-react";
 
 function HuntInner() {

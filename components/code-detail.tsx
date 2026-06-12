@@ -41,7 +41,7 @@ export function CodeDetail({ id, onClose }: { id: string; onClose: () => void })
 
   if (!entry) return null;
 
-  async function research(force: boolean) {
+  async function research() {
     if (!entry) return;
     setLoading(true);
     setError(null);
@@ -97,7 +97,7 @@ export function CodeDetail({ id, onClose }: { id: string; onClose: () => void })
             <div className="card-plain border-dashed inset-dashed px-5 py-8 text-center space-y-3">
               <div className="label-mono label-mono-ink">Not researched yet</div>
               <p className="text-sm text-slate">This code is logged as “to research”.</p>
-              <button className="btn btn-primary btn-sm mx-auto" disabled={loading} onClick={() => research(false)}>
+              <button className="btn btn-primary btn-sm mx-auto" disabled={loading} onClick={() => research()}>
                 {loading ? <Spinner /> : <Search size={13} />} Research now
               </button>
             </div>
@@ -106,7 +106,7 @@ export function CodeDetail({ id, onClose }: { id: string; onClose: () => void })
           {/* actions */}
           <div className="flex flex-wrap gap-2">
             {entry.research && (
-              <button className="btn btn-sm btn-ghost" disabled={loading} onClick={() => research(true)}>
+              <button className="btn btn-sm btn-ghost" disabled={loading} onClick={() => research()}>
                 {loading ? <Spinner /> : <RefreshCw size={13} />} Re-research
               </button>
             )}
