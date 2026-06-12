@@ -3,6 +3,7 @@
 import type { Research } from "@/lib/types";
 import { VERDICT_STAMP, SERVICE_LINE_LABELS, type ServiceLine } from "@/lib/constants";
 import { Stamp, Chip, Label, FallbackNote } from "./ui";
+import { CmsLauncher } from "./cms-launcher";
 import { formatUSD } from "@/lib/utils";
 import type { ReactNode } from "react";
 
@@ -114,6 +115,9 @@ export function ClaimCard({
         <Label>Basis</Label>
         <span className="text-sm italic text-slate">{research.verdictBasis}</span>
       </div>
+
+      {/* verify against primary CMS sources */}
+      <CmsLauncher code={code} />
 
       {actions && <div className="border-t border-rule pt-3 flex flex-wrap gap-2 no-print">{actions}</div>}
     </div>
