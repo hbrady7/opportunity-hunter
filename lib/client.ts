@@ -17,6 +17,7 @@ export interface ApiStatus {
   loading: boolean;
   keyConfigured: boolean;
   model: string | null;
+  provider: string | null;
 }
 
 export function useApiStatus(): ApiStatus {
@@ -24,16 +25,23 @@ export function useApiStatus(): ApiStatus {
     loading: true,
     keyConfigured: false,
     model: null,
+    provider: null,
   });
   useEffect(() => {
     let alive = true;
     fetch("/api/health")
       .then((r) => r.json())
       .then((d) => {
-        if (alive) setStatus({ loading: false, keyConfigured: !!d.keyConfigured, model: d.model ?? null });
+        if (alive)
+          setStatus({
+            loading: false,
+            keyConfigured: !!d.keyConfigured,
+            model: d.model ?? null,
+            provider: d.provider ?? null,
+          });
       })
       .catch(() => {
-        if (alive) setStatus({ loading: false, keyConfigured: false, model: null });
+        if (alive) setStatus({ loading: false, keyConfigured: false, model: null, provider: null });
       });
     return () => {
       alive = false;

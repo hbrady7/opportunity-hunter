@@ -1,5 +1,5 @@
 import { guard, ok, fail } from "@/lib/agents/respond";
-import { askText } from "@/lib/agents/claude";
+import { askText } from "@/lib/agents/llm";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;

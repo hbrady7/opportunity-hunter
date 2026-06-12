@@ -1,4 +1,4 @@
-import { hasApiKey } from "./claude";
+import { hasApiKey } from "./llm";
 import { checkRateLimit, getClientIp, maybePrune } from "./rate-limit";
 
 export type GuardFail = { response: Response };

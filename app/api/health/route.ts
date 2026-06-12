@@ -1,4 +1,4 @@
-import { hasApiKey, MODEL } from "@/lib/agents/claude";
+import { hasApiKey, activeModel, activeProvider } from "@/lib/agents/llm";
 
 export const dynamic = "force-dynamic";
 
@@ -6,6 +6,7 @@ export async function GET() {
   return Response.json({
     ok: true,
     keyConfigured: hasApiKey(),
-    model: hasApiKey() ? MODEL : null,
+    provider: activeProvider(),
+    model: activeModel(),
   });
 }

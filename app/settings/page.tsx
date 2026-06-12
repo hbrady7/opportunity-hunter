@@ -91,13 +91,14 @@ export default function SettingsPage() {
           )}
           <div className="text-sm">
             {api.loading ? "Checking…" : api.keyConfigured ? "API key configured" : "No API key configured"}
+            {api.provider && <span className="chip text-approval ml-2">{api.provider.toUpperCase()}</span>}
             {api.model && <span className="mono text-xs text-slate ml-2">{api.model}</span>}
           </div>
         </div>
         {!api.loading && !api.keyConfigured && (
           <p className="text-xs text-slate mt-2">
-            Set <code className="mono">ANTHROPIC_API_KEY</code> in <code className="mono">.env.local</code> (or Vercel env) to enable Hunt,
-            Verify, Scout, rate-fetch, and Ask. Everything else works without it.
+            Set a <code className="mono">GEMINI_API_KEY</code> (free tier) or <code className="mono">ANTHROPIC_API_KEY</code> in{" "}
+            <code className="mono">.env.local</code> (or Vercel env) to enable Hunt, Verify, Scout, rate-fetch, and Ask. Everything else works without it.
           </p>
         )}
       </Section>

@@ -21,11 +21,13 @@ This is **not** a data platform. There are no file uploads, no datasets, no data
 
 ```bash
 npm install
-cp .env.example .env.local       # then add your ANTHROPIC_API_KEY
+cp .env.example .env.local       # then add a GEMINI_API_KEY (free) or ANTHROPIC_API_KEY
 npm run dev                       # http://localhost:3000
 ```
 
-The app runs **without** an API key — Learn, Library, Settings, and the estimator (with a manually entered rate) all work. Agent-powered screens (Hunt, Verify rate fetch, Scout, Learn's Ask box) show a "key not configured" prompt instead of erroring.
+**Provider:** the app supports either **Google Gemini** (`GEMINI_API_KEY` — has a free tier, `gemini-2.5-flash` by default) or **Anthropic Claude** (`ANTHROPIC_API_KEY` — pay-as-you-go, `claude-sonnet-4-6`). It auto-detects which key is present; if both are set, Gemini is used. Both use the same two-stage, web-search-grounded research pattern, so behavior is identical across the UI.
+
+The app runs **without** any key — Learn, Library, Settings, and the estimator (with a manually entered rate) all work. Agent-powered screens (Hunt, Verify rate fetch, Scout, Learn's Ask box) show a "key not configured" prompt instead of erroring.
 
 ## Data persistence
 

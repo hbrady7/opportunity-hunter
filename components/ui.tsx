@@ -108,8 +108,9 @@ export function KeyMissing() {
     <div className="card-plain border-dashed inset-dashed px-5 py-6 text-center space-y-2">
       <div className="label-mono label-mono-ink text-[12px]">API key not configured</div>
       <p className="text-sm text-slate max-w-md mx-auto">
-        Agent features need an <code className="mono">ANTHROPIC_API_KEY</code>. Set it in{" "}
-        <code className="mono">.env.local</code> (locally) or your Vercel project env, then reload.
+        Agent features need a <code className="mono">GEMINI_API_KEY</code> (free tier) or an{" "}
+        <code className="mono">ANTHROPIC_API_KEY</code>. Set one in{" "}
+        <code className="mono">.env.local</code> (locally) or your Vercel project env, then redeploy.
         Everything static — Library, Learn, Settings, the estimator with a manual rate — still works without it.
       </p>
     </div>

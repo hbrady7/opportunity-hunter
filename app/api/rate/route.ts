@@ -1,5 +1,5 @@
 import { guard, ok, fail } from "@/lib/agents/respond";
-import { twoStageJSON } from "@/lib/agents/claude";
+import { twoStageJSON } from "@/lib/agents/llm";
 import { SERVICE_LINE_LABELS, type ServiceLine } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
