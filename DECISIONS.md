@@ -10,3 +10,13 @@ Running log of build decisions made autonomously.
 - **Git email `hollisbrady2004@gmail.com`, no Co-Authored-By trailer** per standing rules (set locally in this repo only).
 - **localStorage via Zustand `persist`** keyed `opportunity-hunter-v1`; `partialize` excludes the transient `hydrated` flag. All user data browser-only.
 - **`robots.ts` + `noindex` metadata** from the first commit for open-URL hygiene.
+
+## Phases 1–6
+
+- **Two-stage agent pattern with graceful web-search fallback.** Stage 1 web-searches and writes ≤130-word notes; stage 2 (no tools) converts to strict JSON. If the web-search call throws or is unavailable, it retries knowledge-only and flags `usedWebSearch:false`, surfaced as an amber "verify before client use" note. Tolerant JSON extraction strips fences, fixes trailing commas, and balances braces/brackets for truncation.
+- **Server-side sanitization on every agent route.** Each route clamps/whitelists fields (enum coercion, rate must be a finite non-negative number or null, array length caps) so a malformed model response can't corrupt the store.
+- **Draft module is fully local (no agent).** The spec says "synthesize only from saved Library data," so drafts are generated deterministically from stored research/verification/estimates/notes. Bonus: drafting works with no API key and is instant/reliable.
+- **min-Medicare-rate criterion is computed locally when a rate is already known** (from prior research), and only sent to the agent otherwise — deterministic and cheaper. The exclusion-list hard gate is always local.
+- **Verify scoring is deterministic in app code**, never left to the model: any hard-gate FAIL → FAILED; all hard gates PASS and ≥75% soft PASS → VERIFIED; else CONDITIONAL.
+- **`react-hooks/set-state-in-effect` disabled in eslint config.** The localStorage hydration guard and one-shot `?code=` query-prefill are the standard SSR-safe patterns, not cascading-render bugs. Build itself does not lint, so this is purely for a clean `npm run lint`.
+- **Pages using `useSearchParams` (Hunt, Verify, Estimate) are wrapped in `<Suspense>`** per Next 16's requirement.
