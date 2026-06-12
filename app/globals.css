@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+/* ============================================================
+   OPPORTUNITY HUNTER — "Claim Form" design system
+   A CMS-1500 claim form turned into software. Mobile-first.
+   ============================================================ */
+
+:root {
+  --paper: #fbfaf7;
+  --panel: #ffffff;
+  --ink: #1b1e23;
+  --slate: #6b7280;
+  --rule: #e5e2da;
+  --claim-red: #c8102e;
+  --approval-green: #1e7a4d;
+  --amber: #a16207;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-rule: var(--rule);
+  --color-claim: var(--claim-red);
+  --color-approval: var(--approval-green);
+  --color-amber: var(--amber);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+}
+
+* {
+  border-color: var(--rule);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Claim-form micro labels: all-caps letterspaced mono ---- */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: 500;
+}
+.label-mono-ink {
+  color: var(--ink);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Primary card: red 3px top border ---- */
+.card-claim {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--claim-red);
+  border-radius: 2px;
+}
+.card-plain {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+/* ---- Dashed inset box for user-entered figures ---- */
+.inset-dashed {
+  border: 1px dashed var(--rule);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--paper) 60%, var(--panel));
+}
+
+/* ---- Verdict / verification stamps ---- */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.7rem;
+  border: 2px double currentColor;
+  border-radius: 3px;
+  transform: rotate(-5deg);
+  font-size: 0.8rem;
+  user-select: none;
+}
+.stamp-green { color: var(--approval-green); background: color-mix(in srgb, var(--approval-green) 8%, transparent); }
+.stamp-amber { color: var(--amber); background: color-mix(in srgb, var(--amber) 8%, transparent); }
+.stamp-red   { color: var(--claim-red); background: color-mix(in srgb, var(--claim-red) 8%, transparent); }
+.stamp-slate { color: var(--slate); background: color-mix(in srgb, var(--slate) 8%, transparent); }
+
+/* ---- Chips ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---- Ledger table ---- */
+.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.ledger th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-align: left;
+  font-weight: 500;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.ledger td {
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem;
+}
+.ledger tr:last-child td { border-bottom: none; }
+
+/* ---- Inputs ---- */
+.field {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.9rem;
+  width: 100%;
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.field-mono { font-family: var(--font-mono); letter-spacing: 0.05em; }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0.6rem 0.95rem;
+  border-radius: 2px;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, opacity 0.12s;
+  background: var(--panel);
+  color: var(--ink);
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:disabled:hover { background: var(--panel); color: var(--ink); }
+.btn-primary { background: var(--claim-red); color: #fff; border-color: var(--claim-red); }
+.btn-primary:hover { background: #a60d26; color: #fff; }
+.btn-ghost { border-color: var(--rule); }
+.btn-sm { padding: 0.4rem 0.65rem; font-size: 0.66rem; }
+
+/* ---- Spinner ---- */
+@keyframes oh-spin { to { transform: rotate(360deg); } }
+.spin { animation: oh-spin 0.8s linear infinite; }
+
+/* ---- Prose for Learn ---- */
+.prose-claim { color: var(--ink); line-height: 1.65; }
+.prose-claim h2 { font-size: 1.15rem; font-weight: 600; margin: 1.6rem 0 0.6rem; }
+.prose-claim h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+.prose-claim p { margin: 0.6rem 0; color: #33373d; }
+.prose-claim ul { margin: 0.5rem 0 0.8rem; padding-left: 1.1rem; list-style: none; }
+.prose-claim ul li { position: relative; padding-left: 0.4rem; margin: 0.35rem 0; }
+.prose-claim ul li::before { content: "▸"; position: absolute; left: -0.7rem; color: var(--claim-red); }
+.prose-claim strong { font-weight: 600; }
+.prose-claim code { font-family: var(--font-mono); background: var(--paper); border: 1px solid var(--rule); padding: 0.05rem 0.3rem; border-radius: 2px; font-size: 0.85em; }
+.prose-claim a { color: var(--claim-red); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---- Scrollbar polish ---- */
+::-webkit-scrollbar { height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .stamp { transform: none; }
+  .spin { animation: none; }
+  * { transition: none !important; }
+}
+
+/* ---- Print: clean one-pager ---- */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .card-claim, .card-plain { border-color: #000; box-shadow: none; }
+  .stamp { transform: none; }
+}
