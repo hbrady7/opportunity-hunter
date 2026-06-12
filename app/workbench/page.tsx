@@ -4,10 +4,14 @@ import { PageHeader } from "@/components/ui";
 import { BuildGuide } from "@/components/workbench/build-guide";
 import { FormulaCards } from "@/components/workbench/formula-cards";
 import { AnalysisQuestions } from "@/components/workbench/analysis-questions";
+import { PivotRecipes } from "@/components/workbench/pivot-recipes";
+import { WorkbookButton } from "@/components/workbench/workbook-button";
 
 const SECTIONS: [string, string][] = [
+  ["workbook", "Starter Workbook"],
   ["build", "Build Guide"],
   ["formulas", "Formula Cards"],
+  ["pivots", "Pivot Recipes"],
   ["questions", "Analysis Questions"],
 ];
 
@@ -28,12 +32,20 @@ export default function WorkbenchPage() {
         ))}
       </div>
 
+      <section id="workbook" className="scroll-mt-20 mb-10">
+        <WorkbookButton />
+      </section>
+
       <section id="build" className="scroll-mt-20 mb-10">
         <BuildGuide />
       </section>
 
       <section id="formulas" className="scroll-mt-20 mb-10">
         <FormulaCards />
+      </section>
+
+      <section id="pivots" className="scroll-mt-20 mb-10">
+        <PivotRecipes />
       </section>
 
       <section id="questions" className="scroll-mt-20 mb-10">

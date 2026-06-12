@@ -6,7 +6,7 @@ function bestBase(e: CodeEntry): number | null {
   return e.scenarios[0].base;
 }
 
-const HEADERS = [
+export const HEADERS = [
   "Code",
   "Service Line",
   "Description",
