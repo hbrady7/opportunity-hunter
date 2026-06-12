@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   Crosshair,
   Library,
+  Table2,
   BadgeCheck,
   Calculator,
   Compass,
@@ -21,6 +22,7 @@ import { useState, useEffect } from "react";
 const NAV = [
   { href: "/", label: "Hunt", icon: Crosshair, field: "1" },
   { href: "/library", label: "Library", icon: Library, field: "2" },
+  { href: "/workbench", label: "Workbench", icon: Table2, field: "W" },
   { href: "/verify", label: "Verify", icon: BadgeCheck, field: "3" },
   { href: "/estimate", label: "Estimate", icon: Calculator, field: "4" },
   { href: "/scout", label: "Scout", icon: Compass, field: "5" },
@@ -116,7 +118,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </main>
 
       {/* Mobile bottom tab bar */}
-      <nav className="no-print md:hidden fixed bottom-0 inset-x-0 z-30 bg-panel/97 backdrop-blur border-t border-rule grid grid-cols-8">
+      <nav className="no-print md:hidden fixed bottom-0 inset-x-0 z-30 bg-panel/97 backdrop-blur border-t border-rule grid grid-cols-9">
         {NAV.map((n) => {
           const active = isActive(n.href);
           const Icon = n.icon;

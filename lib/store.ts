@@ -80,6 +80,11 @@ interface OHState {
   questions: Question[];
   lastTouchBase: number | null;
   setTouchBase: () => void;
+  // Workbench
+  buildSteps: Record<string, boolean>;
+  toggleBuildStep: (id: string) => void;
+  analysisAnswers: Record<string, { checked: boolean; notes: string }>;
+  setAnalysisAnswer: (id: string, patch: Partial<{ checked: boolean; notes: string }>) => void;
   hydrated: boolean;
   setHydrated: () => void;
 
@@ -150,6 +155,14 @@ export const useStore = create<OHState>()(
       questions: [],
       lastTouchBase: null,
       setTouchBase: () => set({ lastTouchBase: Date.now() }),
+      buildSteps: {},
+      toggleBuildStep: (id) =>
+        set({ buildSteps: { ...get().buildSteps, [id]: !get().buildSteps[id] } }),
+      analysisAnswers: {},
+      setAnalysisAnswer: (id, patch) => {
+        const prev = get().analysisAnswers[id] ?? { checked: false, notes: "" };
+        set({ analysisAnswers: { ...get().analysisAnswers, [id]: { ...prev, ...patch } } });
+      },
       hydrated: false,
       setHydrated: () => set({ hydrated: true }),
 
@@ -351,9 +364,9 @@ export const useStore = create<OHState>()(
       removeQuestion: (id) => set({ questions: get().questions.filter((q) => q.id !== id) }),
 
       exportAll: () => {
-        const { codes, criteria, exclusionList, assumptions, drafts, questions, lastTouchBase } = get();
+        const { codes, criteria, exclusionList, assumptions, drafts, questions, lastTouchBase, buildSteps, analysisAnswers } = get();
         return JSON.stringify(
-          { version: 1, exportedAt: Date.now(), codes, criteria, exclusionList, assumptions, drafts, questions, lastTouchBase },
+          { version: 1, exportedAt: Date.now(), codes, criteria, exclusionList, assumptions, drafts, questions, lastTouchBase, buildSteps, analysisAnswers },
           null,
           2
         );
@@ -371,6 +384,9 @@ export const useStore = create<OHState>()(
             drafts: Array.isArray(data.drafts) ? data.drafts : get().drafts,
             questions: Array.isArray(data.questions) ? data.questions : get().questions,
             lastTouchBase: typeof data.lastTouchBase === "number" ? data.lastTouchBase : get().lastTouchBase,
+            buildSteps: data.buildSteps && typeof data.buildSteps === "object" ? data.buildSteps : get().buildSteps,
+            analysisAnswers:
+              data.analysisAnswers && typeof data.analysisAnswers === "object" ? data.analysisAnswers : get().analysisAnswers,
           });
           return true;
         } catch {
@@ -387,6 +403,8 @@ export const useStore = create<OHState>()(
           criteria: DEFAULT_CRITERIA,
           assumptions: { ...DEFAULT_ASSUMPTIONS },
           lastTouchBase: null,
+          buildSteps: {},
+          analysisAnswers: {},
         }),
     }),
     {
@@ -399,6 +417,8 @@ export const useStore = create<OHState>()(
         drafts: s.drafts,
         questions: s.questions,
         lastTouchBase: s.lastTouchBase,
+        buildSteps: s.buildSteps,
+        analysisAnswers: s.analysisAnswers,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated();

@@ -4,9 +4,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/lib/store";
 import { SI_TABLE, GLOSSARY } from "@/lib/learn-content";
+import { FORMULA_CARDS, PIVOT_RECIPES, ANALYSIS_QUESTIONS } from "@/lib/workbench-content";
 import {
-  Crosshair, Library, BadgeCheck, Calculator, Compass, GraduationCap,
-  FileText, Settings, Search, CornerDownLeft, MessagesSquare,
+  Crosshair, Library, Table2, BadgeCheck, Calculator, Compass, GraduationCap,
+  FileText, Settings, Search, CornerDownLeft, MessagesSquare, FunctionSquare,
 } from "lucide-react";
 
 interface Item {
@@ -21,6 +22,7 @@ interface Item {
 const NAV: { label: string; href: string; icon: React.ReactNode }[] = [
   { label: "Hunt a code", href: "/", icon: <Crosshair size={14} /> },
   { label: "Library", href: "/library", icon: <Library size={14} /> },
+  { label: "Workbench", href: "/workbench", icon: <Table2 size={14} /> },
   { label: "Verify", href: "/verify", icon: <BadgeCheck size={14} /> },
   { label: "Estimate", href: "/estimate", icon: <Calculator size={14} /> },
   { label: "Scout", href: "/scout", icon: <Compass size={14} /> },
@@ -116,6 +118,16 @@ export function CommandPalette() {
     }
     for (const r of SI_TABLE) {
       list.push({ id: `si-${r.si}`, label: `Status indicator ${r.si}`, sub: r.paid === "Yes" ? "separately paid" : r.paid === "No" ? "not separately paid" : r.paid.toLowerCase(), group: "Reference", icon: <GraduationCap size={14} />, run: go("/learn#si") });
+    }
+    // Workbench reference
+    for (const f of FORMULA_CARDS) {
+      list.push({ id: `fx-${f.name}`, label: f.name, sub: "Excel formula", group: "Workbench", icon: <FunctionSquare size={14} />, run: go("/workbench#formulas") });
+    }
+    for (const p of PIVOT_RECIPES) {
+      list.push({ id: `pv-${p.id}`, label: p.name, sub: "Pivot recipe", group: "Workbench", icon: <Table2 size={14} />, run: go("/workbench#pivots") });
+    }
+    for (const aq of ANALYSIS_QUESTIONS) {
+      list.push({ id: `aq-${aq.id}`, label: aq.text, sub: "Analysis question", group: "Workbench", icon: <Table2 size={14} />, run: go("/workbench#questions") });
     }
     return list;
   }, [codes, router]);
