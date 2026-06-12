@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PageHeader, EmptyState, Label, Spinner } from "@/components/ui";
 import { ClaimCard } from "@/components/claim-card";
 import { AgentErrorView } from "@/components/agents/agent-error";
@@ -13,8 +13,9 @@ import type { Research } from "@/lib/types";
 import { KeyMissing } from "@/components/ui";
 import { Crosshair, Search, Save, BadgeCheck, Calculator, Check } from "lucide-react";
 
-export default function HuntPage() {
+function HuntInner() {
   const router = useRouter();
+  const params = useSearchParams();
   const hydrated = useHydrated();
   const api = useApiStatus();
   const upsertResearch = useStore((s) => s.upsertResearch);
@@ -31,22 +32,40 @@ export default function HuntPage() {
   const [saved, setSaved] = useState(false);
 
   const valid = isValidCode(code);
+  const autoRan = useRef(false);
 
-  async function run() {
-    if (!valid) return;
+  // prefill + optional auto-run from query (?code=&sl=&run=1) — e.g. from Scout
+  useEffect(() => {
+    if (autoRan.current) return;
+    const qc = params.get("code");
+    const qsl = params.get("sl") as ServiceLine | null;
+    if (qc && isValidCode(qc)) {
+      autoRan.current = true;
+      const c = normalizeCode(qc);
+      const sl = qsl && SERVICE_LINES.includes(qsl) ? qsl : serviceLine;
+      setCode(c);
+      setServiceLine(sl);
+      if (params.get("run") === "1") run(c, sl);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params]);
+
+  async function run(oc?: string, osl?: ServiceLine) {
+    const c = normalizeCode(oc ?? code);
+    const sl = osl ?? serviceLine;
+    if (!isValidCode(c)) return;
     setLoading(true);
     setError(null);
     setResult(null);
     setSaved(false);
-    const c = normalizeCode(code);
     try {
       const data = await agentPost<{ research: Research; usedWebSearch: boolean }>("/api/research", {
         code: c,
-        serviceLine,
+        serviceLine: sl,
       });
       setResult({
         code: c,
-        serviceLine,
+        serviceLine: sl,
         research: { ...data.research, usedWebSearch: data.usedWebSearch, researchedAt: Date.now() },
       });
     } catch (e) {
@@ -141,7 +160,7 @@ export default function HuntPage() {
           </div>
         </div>
 
-        <button className="btn btn-primary w-full sm:w-auto" disabled={!valid || loading} onClick={run}>
+        <button className="btn btn-primary w-full sm:w-auto" disabled={!valid || loading} onClick={() => run()}>
           {loading ? <Spinner /> : <Search size={14} />}
           {loading ? "Researching…" : "Research code"}
         </button>
@@ -198,5 +217,13 @@ export default function HuntPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function HuntPage() {
+  return (
+    <Suspense fallback={<div className="card-plain h-40 animate-pulse" />}>
+      <HuntInner />
+    </Suspense>
   );
 }
