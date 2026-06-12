@@ -6,7 +6,7 @@ import { PageHeader, Label, Chip, Spinner, KeyMissing, FallbackNote } from "@/co
 import { AgentErrorView } from "@/components/agents/agent-error";
 import { useApiStatus, agentPost, AgentError } from "@/lib/client";
 import { useStore } from "@/lib/store";
-import { SI_TABLE, GLOSSARY, SOURCES, PLAYBOOK, type PaidFlag } from "@/lib/learn-content";
+import { SI_TABLE, GLOSSARY, SOURCES, PLAYBOOK, MODIFIERS, type PaidFlag } from "@/lib/learn-content";
 import { ExternalLink, MessageCircleQuestion, Send, BookmarkPlus, Check } from "lucide-react";
 
 const SECTIONS = [
@@ -15,6 +15,7 @@ const SECTIONS = [
   ["oppspfs", "OPPS vs PFS"],
   ["anatomy", "Code Anatomy"],
   ["ncci", "NCCI & Packaging"],
+  ["mods", "Modifiers"],
   ["lines", "Service Lines"],
   ["playbook", "The Playbook"],
   ["glossary", "Glossary"],
@@ -209,6 +210,35 @@ export default function LearnPage() {
           <strong>Packaging</strong> is different from an edit — it&rsquo;s a payment policy. A packaged code (status <code>N</code>) is allowed on the
           claim but earns no separate dollars. When sizing opportunity, always separate &ldquo;can&rsquo;t bill it&rdquo; (an edit) from &ldquo;won&rsquo;t get paid extra for it&rdquo; (packaging).
         </p>
+      </section>
+
+      {/* MODIFIERS */}
+      <section id="mods" className="scroll-mt-20 mb-10">
+        <h2 className="text-lg font-semibold mb-1">Modifier Mini-Reference</h2>
+        <p className="text-sm text-slate mb-3">
+          Modifiers are often the difference between a denied claim and a separately paid one. These are the ones that move
+          outpatient revenue most.
+        </p>
+        <div className="card-plain overflow-x-auto">
+          <table className="ledger min-w-[560px]">
+            <thead>
+              <tr>
+                <th>Mod</th>
+                <th>Meaning</th>
+                <th>When it applies &amp; why it matters</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MODIFIERS.map((m) => (
+                <tr key={m.mod}>
+                  <td className="mono font-semibold align-top">{m.mod}</td>
+                  <td className="align-top text-xs font-medium">{m.name}</td>
+                  <td className="text-xs">{m.when}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {/* SERVICE LINES */}

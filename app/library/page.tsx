@@ -149,6 +149,24 @@ function LibraryInner() {
         }
       />
 
+      {/* pipeline summary */}
+      {codes.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-4">
+          {[
+            { k: "Codes", v: String(codes.length) },
+            { k: "Sep. reimb.", v: String(codes.filter((c) => c.research?.reimbursable === "Yes").length) },
+            { k: "Verified", v: String(codes.filter((c) => c.verification?.result === "VERIFIED").length) },
+            { k: "Strong", v: String(codes.filter((c) => c.research?.verdict === "STRONG").length) },
+            { k: "Est. pipeline", v: formatUSD(codes.reduce((s, c) => s + (bestBase(c) ?? 0), 0)) },
+          ].map((s) => (
+            <div key={s.k} className="card-plain p-2.5 text-center">
+              <div className="label-mono">{s.k}</div>
+              <div className="mono text-base sm:text-lg font-semibold mt-0.5">{s.v}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* quick add */}
       <div className="card-plain p-3 sm:p-4 mb-4">
         <Label>Quick-add a code (logs it “to research”)</Label>

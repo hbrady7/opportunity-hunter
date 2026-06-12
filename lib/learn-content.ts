@@ -71,6 +71,23 @@ export const GLOSSARY: GlossaryTerm[] = [
   { term: "Kodiak", def: "The opportunity-sizing framing used here — a directional 'potential' figure built from national rates and stated assumptions, not a quote." },
 ];
 
+export interface ModifierRow {
+  mod: string;
+  name: string;
+  when: string;
+}
+
+export const MODIFIERS: ModifierRow[] = [
+  { mod: "25", name: "Significant, separately identifiable E/M", when: "Appended to an E/M on the same day as a procedure to show the visit was a distinct service — unlocks separate payment for the E/M (classic ED under-capture fix)." },
+  { mod: "59", name: "Distinct procedural service", when: "Breaks an NCCI PTP edit when two normally-bundled procedures were genuinely separate (different site/session). Use the X{EPSU} subsets when they fit — payers increasingly prefer them." },
+  { mod: "XE", name: "Separate encounter", when: "An X{EPSU} subset of 59 — a service distinct because it occurred in a separate encounter." },
+  { mod: "XS", name: "Separate structure", when: "An X{EPSU} subset of 59 — distinct because it was a separate organ/structure." },
+  { mod: "XP", name: "Separate practitioner", when: "An X{EPSU} subset of 59 — distinct because performed by a different practitioner." },
+  { mod: "XU", name: "Unusual non-overlapping service", when: "An X{EPSU} subset of 59 — distinct because it doesn't overlap the usual components of the main service." },
+  { mod: "JW", name: "Drug amount discarded/wasted", when: "Reports the discarded portion of a single-use vial so the wasted drug is still paid (oncology J-codes). Required where waste occurs." },
+  { mod: "JZ", name: "Zero drug wasted", when: "Affirmatively reports that no amount was discarded from a single-use vial — now required alongside JW policy to avoid denials." },
+];
+
 export interface SourceLink {
   name: string;
   url: string;

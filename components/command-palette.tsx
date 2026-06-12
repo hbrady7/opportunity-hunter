@@ -36,6 +36,7 @@ const LEARN_SECTIONS: [string, string][] = [
   ["oppspfs", "OPPS vs PFS"],
   ["anatomy", "Code Anatomy"],
   ["ncci", "NCCI & Packaging"],
+  ["mods", "Modifier Mini-Reference"],
   ["lines", "Service-Line One-Pagers"],
   ["playbook", "The Playbook"],
   ["glossary", "Glossary"],
