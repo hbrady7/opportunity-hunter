@@ -20,3 +20,11 @@ Running log of build decisions made autonomously.
 - **Verify scoring is deterministic in app code**, never left to the model: any hard-gate FAIL → FAILED; all hard gates PASS and ≥75% soft PASS → VERIFIED; else CONDITIONAL.
 - **`react-hooks/set-state-in-effect` disabled in eslint config.** The localStorage hydration guard and one-shot `?code=` query-prefill are the standard SSR-safe patterns, not cascading-render bugs. Build itself does not lint, so this is purely for a clean `npm run lint`.
 - **Pages using `useSearchParams` (Hunt, Verify, Estimate) are wrapped in `<Suspense>`** per Next 16's requirement.
+
+## Phase 7 — Builder's Choice
+
+Each addition earns its place by removing friction from the daily loop (look up → verify → estimate → note → draft) or teaching the domain faster.
+
+- **⌘K command palette (`components/command-palette.tsx`).** Global fuzzy jump to any page, any saved code (deep-links into the Library drawer via `?open=`), any Learn section, glossary term, or status indicator. Opened with ⌘K / Ctrl-K or the rail/top-bar search button (custom `oh:cmdk` event). This is the connective tissue that makes a multi-module tool feel like one surface — highest-leverage single addition.
+- **Mentor prep page (`/mentor`).** The internship runs on recurring mentor touch-bases. This page bundles: a persistent **question bank** (captured here or from Learn → Ask), an **auto agenda** synthesized from Library state (conditional codes to confirm, research backlog, failed verifications, top verified opportunities, open questions), and a **"since last touch-base" activity feed** driven by code timelines with a one-tap "I just had a touch-base" marker. "Copy prep" exports the whole thing as markdown. Reached via ⌘K and a rail link rather than a 9th tab (the 8-slot bottom bar is already dense on mobile).
+- **Library deep-linking (`/library?open=<id>`).** Lets the palette (and future links) open a specific code's detail drawer directly.

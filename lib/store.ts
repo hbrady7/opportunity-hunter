@@ -78,6 +78,8 @@ interface OHState {
   assumptions: Assumptions;
   drafts: Draft[];
   questions: Question[];
+  lastTouchBase: number | null;
+  setTouchBase: () => void;
   hydrated: boolean;
   setHydrated: () => void;
 
@@ -146,6 +148,8 @@ export const useStore = create<OHState>()(
       assumptions: { ...DEFAULT_ASSUMPTIONS },
       drafts: [],
       questions: [],
+      lastTouchBase: null,
+      setTouchBase: () => set({ lastTouchBase: Date.now() }),
       hydrated: false,
       setHydrated: () => set({ hydrated: true }),
 
@@ -347,9 +351,9 @@ export const useStore = create<OHState>()(
       removeQuestion: (id) => set({ questions: get().questions.filter((q) => q.id !== id) }),
 
       exportAll: () => {
-        const { codes, criteria, exclusionList, assumptions, drafts, questions } = get();
+        const { codes, criteria, exclusionList, assumptions, drafts, questions, lastTouchBase } = get();
         return JSON.stringify(
-          { version: 1, exportedAt: Date.now(), codes, criteria, exclusionList, assumptions, drafts, questions },
+          { version: 1, exportedAt: Date.now(), codes, criteria, exclusionList, assumptions, drafts, questions, lastTouchBase },
           null,
           2
         );
@@ -366,6 +370,7 @@ export const useStore = create<OHState>()(
             assumptions: data.assumptions ? { ...get().assumptions, ...data.assumptions } : get().assumptions,
             drafts: Array.isArray(data.drafts) ? data.drafts : get().drafts,
             questions: Array.isArray(data.questions) ? data.questions : get().questions,
+            lastTouchBase: typeof data.lastTouchBase === "number" ? data.lastTouchBase : get().lastTouchBase,
           });
           return true;
         } catch {
@@ -381,6 +386,7 @@ export const useStore = create<OHState>()(
           exclusionList: [],
           criteria: DEFAULT_CRITERIA,
           assumptions: { ...DEFAULT_ASSUMPTIONS },
+          lastTouchBase: null,
         }),
     }),
     {
@@ -392,6 +398,7 @@ export const useStore = create<OHState>()(
         assumptions: s.assumptions,
         drafts: s.drafts,
         questions: s.questions,
+        lastTouchBase: s.lastTouchBase,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated();

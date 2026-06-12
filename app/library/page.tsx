@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PageHeader, EmptyState, Label, Chip } from "@/components/ui";
 import { CodeDetail } from "@/components/code-detail";
 import { useStore } from "@/lib/store";
@@ -30,13 +31,20 @@ function VerdictChip({ v }: { v?: Verdict }) {
   return <Chip tone={tone}>{v}</Chip>;
 }
 
-export default function LibraryPage() {
+function LibraryInner() {
+  const params = useSearchParams();
   const hydrated = useHydrated();
   const codes = useStore((s) => s.codes);
   const quickAdd = useStore((s) => s.quickAdd);
   const isExcluded = useStore((s) => s.isExcluded);
 
   const [openId, setOpenId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const o = params.get("open");
+    if (o && codes.some((c) => c.id === o)) setOpenId(o);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params, hydrated]);
   const [sortKey, setSortKey] = useState<SortKey>("charges");
   const [sortDir, setSortDir] = useState<1 | -1>(-1);
   const [flService, setFlService] = useState<ServiceLine | "all">("all");
@@ -245,5 +253,13 @@ export default function LibraryPage() {
 
       {openId && <CodeDetail id={openId} onClose={() => setOpenId(null)} />}
     </div>
+  );
+}
+
+export default function LibraryPage() {
+  return (
+    <Suspense fallback={<div className="card-plain h-40 animate-pulse" />}>
+      <LibraryInner />
+    </Suspense>
   );
 }

@@ -12,8 +12,11 @@ import {
   GraduationCap,
   FileText,
   Settings,
+  Search,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import { CommandPalette } from "./command-palette";
+import { useState, useEffect } from "react";
 
 const NAV = [
   { href: "/", label: "Hunt", icon: Crosshair, field: "1" },
@@ -26,21 +29,40 @@ const NAV = [
   { href: "/settings", label: "Settings", icon: Settings, field: "8" },
 ];
 
+function cmdk() {
+  window.dispatchEvent(new Event("oh:cmdk"));
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const [isMac, setIsMac] = useState(true);
+  useEffect(() => {
+    setIsMac(/Mac|iPhone|iPad/.test(navigator.platform));
+  }, []);
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <div className="min-h-screen md:flex">
+      <CommandPalette />
       {/* Desktop left rail */}
       <aside className="no-print hidden md:flex md:flex-col md:w-56 md:shrink-0 border-r border-rule bg-panel sticky top-0 h-screen">
-        <Link href="/" className="px-5 pt-6 pb-5 border-b border-rule block">
+        <Link href="/" className="px-5 pt-6 pb-4 block">
           <div className="label-mono text-[9px]">CMS-1500 · ORO</div>
           <div className="font-semibold text-[15px] leading-tight mt-1">
             Opportunity<span className="text-claim">.</span>Hunter
           </div>
         </Link>
+        <div className="px-3 pb-3 border-b border-rule">
+          <button
+            onClick={cmdk}
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate border border-rule rounded-[2px] hover:border-ink hover:text-ink transition-colors"
+          >
+            <Search size={13} />
+            <span>Quick search</span>
+            <span className="mono text-[9px] ml-auto">{isMac ? "⌘K" : "^K"}</span>
+          </button>
+        </div>
         <nav className="flex-1 py-3">
           {NAV.map((n) => {
             const active = isActive(n.href);
@@ -63,11 +85,18 @@ export function AppShell({ children }: { children: ReactNode }) {
             );
           })}
         </nav>
-        <div className="px-5 py-4 border-t border-rule">
-          <div className="label-mono text-[9px] leading-relaxed">
-            Browser-only data
-            <br />
-            Back up in Settings
+        <div className="px-3 py-3 border-t border-rule space-y-2">
+          <Link
+            href="/mentor"
+            className={cn(
+              "flex items-center gap-2 px-3 py-2 text-xs rounded-[2px] border transition-colors",
+              isActive("/mentor") ? "border-claim text-ink font-semibold" : "border-rule text-slate hover:text-ink hover:border-ink"
+            )}
+          >
+            Mentor prep
+          </Link>
+          <div className="label-mono text-[9px] leading-relaxed px-1">
+            Browser-only data · back up in Settings
           </div>
         </div>
       </aside>
@@ -79,7 +108,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link href="/" className="font-semibold text-[15px]">
             Opportunity<span className="text-claim">.</span>Hunter
           </Link>
-          <span className="label-mono text-[9px]">ORO COMPANION</span>
+          <button onClick={cmdk} className="flex items-center gap-1.5 text-slate" aria-label="Quick search">
+            <Search size={18} />
+          </button>
         </header>
         <div className="max-w-3xl mx-auto px-4 py-5 md:px-8 md:py-8">{children}</div>
       </main>
