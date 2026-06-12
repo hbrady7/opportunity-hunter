@@ -132,7 +132,9 @@ export function AppShell({ children }: { children: ReactNode }) {
               )}
             >
               <Icon size={18} strokeWidth={active ? 2.4 : 1.8} />
-              <span className="leading-none tracking-tight">{n.label}</span>
+              <span className="leading-none tracking-tight w-full text-center truncate px-0.5">
+                {n.href === "/workbench" ? "Work" : n.label}
+              </span>
             </Link>
           );
         })}
